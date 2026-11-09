@@ -1,0 +1,22 @@
+{
+    "name": "bsinternet/paytr",
+    "description": "Bayi yazılımı için PayTR kart ödeme modülü: iFrame (3D Secure), taksit tablosu, BIN sorgusu, iade ve kartla cari tahsilat.",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bsinternet\\Paytr\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bsinternet\\Paytr\\PaytrServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable"
+}
