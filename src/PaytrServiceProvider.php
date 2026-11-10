@@ -38,6 +38,12 @@ final class PaytrServiceProvider extends ServiceProvider
 
         hooks()->filter('shop.settings.defaults', fn (array $value) => [...$value, ...self::DEFAULTS]);
 
+        // İçerik güvenlik politikası: ödeme sayfasındaki PayTR çerçevesi. Betikler
+        // görünümde nonce taşır ('strict-dynamic'), ayrıca adres gerekmez.
+        hooks()->filter('security.csp', fn (array $value) => array_merge_recursive($value, [
+            'frame-src' => ['https://www.paytr.com'],
+        ]));
+
         hooks()->action('shop.payment.methods.register', function (PaymentRegistry $payments): void {
             $payments->add(new PaytrGateway);
         }, 20);

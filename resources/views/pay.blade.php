@@ -19,9 +19,9 @@
         <div class="muted">{{ $description }} · <strong>{{ $amount }}</strong></div>
     </header>
     <main>
-        <script src="https://www.paytr.com/js/iframeResizer.min.js"></script>
+        <script src="https://www.paytr.com/js/iframeResizer.min.js" nonce="{{ \Illuminate\Support\Facades\Vite::cspNonce() }}"></script>
         <iframe src="https://www.paytr.com/odeme/guvenli/{{ $token }}" id="paytriframe" frameborder="0" scrolling="no" title="{{ __('PayTR güvenli ödeme') }}"></iframe>
-        <script>iFrameResize({}, '#paytriframe');</script>
+        <script nonce="{{ \Illuminate\Support\Facades\Vite::cspNonce() }}">iFrameResize({}, '#paytriframe');</script>
         <p class="muted">{{ __('Kart bilgileriniz PayTR güvenli ödeme sayfasında işlenir; mağazada saklanmaz.') }}</p>
     </main>
 </body>
