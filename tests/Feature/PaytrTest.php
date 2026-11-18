@@ -17,6 +17,7 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\PaymentRefund;
 use App\Models\Product;
+use App\Models\Setting;
 use App\Models\User;
 use App\Models\Warehouse;
 use App\Services\Shop\Basket;
@@ -257,4 +258,14 @@ it('keeps the PayTR secrets masked on the settings screen', function () {
     expect(ShopSettings::get('paytr_merchant_key'))->toBe('KEY123')
         ->and(ShopSettings::get('paytr_merchant_id'))->toBe('999')
         ->and(ShopSettings::get('paytr_fee_payer'))->toBe('merchant');
+});
+
+it('stores the PayTR secrets encrypted and never shares them in bulk', function () {
+    $raw = fn (string $key) => (string) Setting::query()->where('key', $key)->value('value');
+
+    expect(ShopSettings::all())->not->toHaveKeys(['paytr_merchant_key', 'paytr_merchant_salt'])
+        ->and(ShopSettings::all())->toHaveKey('paytr_merchant_id')
+        ->and($raw('paytr_merchant_key'))->not->toContain('KEY123')
+        ->and($raw('paytr_merchant_salt'))->not->toBe('')
+        ->and(ShopSettings::get('paytr_merchant_key'))->toBe('KEY123');
 });

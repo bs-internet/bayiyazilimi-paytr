@@ -32,9 +32,14 @@ final class PaytrServiceProvider extends ServiceProvider
         'paytr_fee_payer' => 'customer',
     ];
 
+    /** Yalnız sunucuda kalacak ayarlar: çekirdek şifreli saklar, vitrine / ekranlara toplu göndermez. */
+    public const SECRET_KEYS = ['paytr_merchant_key', 'paytr_merchant_salt'];
+
     public function register(): void
     {
         $this->app['config']->push('inertia.pages.paths', __DIR__.'/../resources/js/pages');
+
+        hooks()->filter('shop.settings.secret_keys', fn (array $value) => [...$value, ...self::SECRET_KEYS]);
 
         hooks()->filter('shop.settings.defaults', fn (array $value) => [...$value, ...self::DEFAULTS]);
 
